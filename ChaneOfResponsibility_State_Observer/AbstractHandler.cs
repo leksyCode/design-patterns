@@ -6,26 +6,27 @@ namespace ChaneOfResponsibility_State_Observer
 {
     abstract class AbstractHandler : IHandler
     {
+
         private IHandler _nextHandler;
 
+        public abstract void TransitionTo(State state);
+        public abstract void ChangeStateToAwaiting();
+
+        public abstract void ChangeStateToPreparing();
 
         public IHandler SetNext(IHandler handler)
         {
             this._nextHandler = handler;
-
-            // Возврат обработчика отсюда позволит связать обработчики простым
-            // способом, вот так:
-            // monkey.SetNext(squirrel).SetNext(dog);
             return handler;
         }
 
-        public virtual object Handle(object request)
+        public virtual object HandlePackage(object request)
         {
             if (this._nextHandler != null)
             {
-                return this._nextHandler.Handle(request);
+                return this._nextHandler.HandlePackage(request);
             }
-            else
+            else 
             {
                 return null;
             }

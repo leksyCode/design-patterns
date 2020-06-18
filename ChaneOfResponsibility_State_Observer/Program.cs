@@ -3,23 +3,25 @@ using System.Collections.Generic;
 
 namespace ChaneOfResponsibility_State_Observer
 {
+    
+
     class Program
     {
         static void Main(string[] args)
-        {           
-            var transborderEmployee = new TransborderHandler();
-            var countryEmployee = new CountryHandler();
-            var plovdivEmployee = new PlovdivHandler();
+        { 
+            // Make employees with awaiting state
+            var transborderEmployee = new TransborderHandler(new AwaitingPackage());
+            var countryEmployee = new CountryHandler(new AwaitingPackage());
+            var plovdivEmployee = new PlovdivHandler(new AwaitingPackage());
+         
+            transborderEmployee.SetNext(countryEmployee).SetNext(plovdivEmployee); // set chain
 
-            // set chain
-            transborderEmployee.SetNext(countryEmployee).SetNext(plovdivEmployee);
+            Console.WriteLine();
 
-
-          
-            ClientsSimulation(transborderEmployee);                       
+            ClientsSimulation(transborderEmployee);     // Method that simulates clients                   
         }
 
-        public static void ClientsSimulation(AbstractHandler handler)
+        public static void ClientsSimulation(AbstractHandler employee)
         {
             List<string> packages = new List<string> { "Plovdiv package", "Transborder package", "Moon package", "Country package" };
 
@@ -27,13 +29,13 @@ namespace ChaneOfResponsibility_State_Observer
             {
                 Console.WriteLine($"Client with {package} entered office");
 
-                var result = handler.Handle(package);
+                var result = employee.HandlePackage(package);
 
-                if (result != null)
-                {
+                if (result != null) // if employee took the package
+                {                    
                     Console.Write($"   {result}");
                 }
-                else
+                else 
                 {
                     Console.WriteLine($"   {package} was rejected.");
                 }

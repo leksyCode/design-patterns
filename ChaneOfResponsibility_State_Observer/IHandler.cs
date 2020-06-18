@@ -8,6 +8,6 @@ namespace ChaneOfResponsibility_State_Observer
     {
         IHandler SetNext(IHandler handler);
 
-        object Handle(object request);
+        object HandlePackage(object request);
     }
 }

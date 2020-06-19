@@ -4,10 +4,11 @@ using System.Text;
 
 namespace ChaneOfResponsibility_State_Observer
 {
-    interface IHandler
+    interface ISubject
     {
-        IHandler SetNext(IHandler handler);
+        void Attach(IObserver observer);
 
-        bool HandlePackage(object request);
+        void Detach(IObserver observer);
+        void Notify();
     }
 }

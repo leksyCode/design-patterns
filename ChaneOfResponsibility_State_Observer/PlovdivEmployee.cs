@@ -4,18 +4,18 @@ using System.Text;
 
 namespace ChaneOfResponsibility_State_Observer
 {
-    class TransborderHandler : AbstractHandler
+    class PlovdivEmployee : AbstractEmployee
     {
-        private State _state = null;
+        public override State _state { get; set; } = null;
 
-        public TransborderHandler(State state)
+        public PlovdivEmployee(State state)
         {
             this.TransitionTo(state);
         }
 
         public override void TransitionTo(State state)
         {
-            Console.WriteLine($"Transborder employee: state changed on {state.GetType().Name}.");
+            Console.WriteLine($"  Plovdiv employee: state changed on {state.GetType().Name}.");
             this._state = state;
             this._state.SetContext(this);
         }
@@ -30,16 +30,17 @@ namespace ChaneOfResponsibility_State_Observer
             this._state.SetPreparingState();
         }
 
-        public override object HandlePackage(object request)
+        public override bool HandlePackage(object request)
         {
-            if ((request as string) == "Transborder package")
+            if (request.ToString() == "package for Plovdiv")
             {
                 this.ChangeStateToPreparing();
-                return $"Transborder employee: took the package.\n";
+                base.Notify();
+                return true;
             }
             else
             {
-                return base.HandlePackage(request);
+                 return base.HandlePackage(request);
             }
         }
     }
